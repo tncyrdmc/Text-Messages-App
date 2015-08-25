@@ -1,0 +1,27 @@
+<project name="server" basedir="." default="main">
+    <property name="src.dir" value="src"/>
+    <property name="classes.dir" value="bin/classes"/>
+    <property name="main-class" value="MultipleClientProtocolServer"/>
+    <target name="clean">
+        <delete dir="${classes.dir}"/>
+    </target>
+    <target name="compile">
+        <mkdir dir="bin/classes"/>
+        <javac srcdir="src" destdir="bin/classes" includeantruntime="false">
+        	<compilerarg line="-proc:none"/>
+        </javac>
+    </target>
+    <target name="jar" depends="compile">
+        <jar destfile="bin/server.jar" basedir="bin/classes">
+            <manifest>
+                <attribute name="Main-Class" value="threadPerClient/MultipleClientProtocolServer"/>
+            </manifest>
+        </jar>
+    </target>
+    <target name="run" depends="jar">
+        <java jar="bin/server.jar" fork="true">
+            <arg value="${arg0}"/>
+        </java>
+    </target>
+    <target name="main" depends="run"/>
+</project>
